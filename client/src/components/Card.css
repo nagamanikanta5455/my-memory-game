@@ -1,0 +1,239 @@
+/* --- 1. BASE WRAPPER (No hardcoded height here) --- */
+.card-wrapper {
+  position: relative;
+  aspect-ratio: 3 / 4; 
+  margin: 0 auto;
+  perspective: 1000px;
+}
+
+/* --- 2. DYNAMIC SCALING (The Magic Fix) --- */
+
+/* EASY MODE (4x4): Bulletproof scaling to prevent bottom clipping */
+.scale-easy .card-wrapper {
+  /* THE FIX: Dropped to 10vh and capped at 110px max */
+  height: clamp(60px, 10vh, 110px); 
+}
+.scale-easy .card-front, .scale-easy .card-back {
+  font-size: clamp(1.5rem, 4vh, 3rem); 
+}
+.scale-easy .card-back::after {
+  font-size: clamp(1rem, 2.5vh, 2rem); 
+}
+
+/* MEDIUM MODE (5x6): Bulletproof scaling to prevent bottom clipping */
+.scale-medium .card-wrapper {
+  /* THE FIX: Dropped the relative height from 11vh to 8.5vh and capped at 100px */
+  height: clamp(50px, 8.5vh, 100px); 
+}
+.scale-medium .card-front, .scale-medium .card-back {
+  /* Scaled the fonts down slightly so the stars don't break out of the smaller boxes */
+  font-size: clamp(1.2rem, 3.5vh, 2.5rem); 
+}
+.scale-medium .card-back::after {
+  font-size: clamp(0.9rem, 2vh, 1.5rem); 
+}
+
+/* HARD MODE (6x8): Compact cards to prevent bottom cut-off */
+.scale-hard .card-wrapper {
+  height: clamp(40px, 7.5vh, 110px); 
+}
+.scale-hard .card-front, .scale-hard .card-back {
+  font-size: clamp(1.2rem, 3vh, 2.8rem); 
+}
+.scale-hard .card-back::after {
+  font-size: clamp(1rem, 2vh, 1.8rem); 
+}
+
+/* --- 3. THE 3D FLIP MECHANISM (Keep this exactly as is) --- */
+.card {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card:hover:not(.flipped) {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.card:active:not(.flipped) {
+  transform: scale(0.95);
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+  border-radius: inherit;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+/* --- 3. PUNCHY 250ms MATCH PULSE --- */
+.card.match {
+  /* THE FIX: Fast, snappy, 250ms scale pop */
+  animation: matchPulse 0.25s ease-out forwards;
+  z-index: 10;
+}
+
+.card.match .card-front {
+  border-color: #39ff14;
+  box-shadow: 0 0 30px rgba(57, 255, 20, 0.5), inset 0 0 15px rgba(57, 255, 20, 0.2);
+}
+
+.card.error {
+  animation: shakeError 0.5s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+.card.error .card-front {
+  border-color: #ff003c;
+}
+
+.card-front, .card-back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0; left: 0;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+}
+
+/* --- KEEP YOUR COLORS EXACTLY THE SAME --- */
+.card-back {
+  background: linear-gradient(135deg, #1e1e28, #2a2a35);
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.card-back::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed rgba(212, 175, 55, 0.25);
+  border-radius: 8px;
+}
+
+.card-back::after {
+  content: '✦';
+  font-family: 'Cinzel', serif;
+  color: rgba(212, 175, 55, 0.9);
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+}
+
+.card-front {
+  background: radial-gradient(circle, #3a3a4d, #1e1e28);
+  border: 2px solid #d4af37;
+  transform: rotateY(180deg);
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes matchPulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.15);
+  }
+
+  /* Snappy pop */
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shakeError {
+
+  10%,
+  90% {
+    transform: translate3d(-2px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(3px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-5px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(5px, 0, 0);
+  }
+}
+
+/* --- 1. THE INITIAL DEAL (Staggered cascading entrance) --- */
+.card-wrapper {
+  animation: deal-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes deal-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* --- 2. THE MATCH CELEBRATION (Pop & Glow) --- */
+.wrapper-match {
+  animation: pop-gold 0.5s ease-out;
+}
+
+@keyframes pop-gold {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8));
+    z-index: 10;
+  }
+
+  100% {
+    transform: scale(1);
+    filter: none;
+  }
+}
+
+/* --- 3. THE MISMATCH SHAKE (Head shake gesture) --- */
+.wrapper-mismatch {
+  animation: head-shake 0.4s ease-in-out;
+}
+
+@keyframes head-shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20%,
+  60% {
+    transform: translateX(-8px) rotate(-2deg);
+  }
+
+  40%,
+  80% {
+    transform: translateX(8px) rotate(2deg);
+  }
+}

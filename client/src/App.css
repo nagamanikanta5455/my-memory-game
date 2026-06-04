@@ -1,0 +1,534 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* --- MASTER PLATFORM RESET --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  outline: none !important;
+  border: none !important;
+}
+
+/* Update this block */
+html,
+body,
+#root {
+  width: 100vw;
+  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #050508;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Update this block */
+.app-layout {
+  width: 100%;
+  min-height: 100vh;
+  /* THE FIX: Forces the gradient to stretch all the way down */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background:
+    radial-gradient(circle at 50% 40%, #10101a 0%, #050508 70%),
+    radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.01) 0%, transparent 40%);
+}
+
+/* ADD THIS ANYWHERE IN App.css: A premium loading pulse animation */
+@keyframes loadingPulse {
+  0% {
+    opacity: 0.2;
+    width: 20px;
+  }
+
+  50% {
+    opacity: 0.8;
+    width: 60px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  }
+
+  100% {
+    opacity: 0.2;
+    width: 20px;
+  }
+}
+
+.pulse-bar {
+  height: 3px;
+  background: #ffffff;
+  border-radius: 2px;
+  margin: 0 auto 1.5rem;
+  animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+/* --- THE PRESTIGE VIEWPORT --- */
+.app-layout {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background:
+    radial-gradient(circle at 50% 40%, #10101a 0%, #050508 70%),
+    radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.01) 0%, transparent 40%);
+}
+
+/* --- THE LOBBY LAYOUT ENGINE --- */
+/* --- THE FIX: Let the wrapper breathe, fix the scroll clipping --- */
+.lobby-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Use flex-start so content never bleeds off the top edge */
+  justify-content: flex-start; 
+  width: 100%;
+  max-width: 100%; /* UNLOCKED: Let the title span the whole screen! */
+  height: 100vh;
+  padding: 4rem 1rem 2rem 1rem; /* Acts as our visual centering space */
+  z-index: 10;
+  overflow-y: auto;
+  scrollbar-width: none; 
+}
+.lobby-wrapper::-webkit-scrollbar { display: none; }
+
+/* --- THE PREMIUM TITLE --- */
+/* By using the same font but making it bold (700) with extreme letter-spacing (12px), it looks like a luxury logo */
+.main-title.cinematic-glow {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem); 
+  font-weight: 700;
+  letter-spacing: 12px;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap; 
+  line-height: 1.2;    
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.12);
+  
+  /* THE FIX: Pulled tighter to the card */
+  margin-bottom: 1.2rem; 
+  margin-top: 2rem; /* Ensures it breathes at the top */
+}
+
+/* --- THE FLOATING ULTRA-GLASS PANEL --- */
+/* --- THE FIX: Restrict only the card, not the title --- */
+.premium-lobby-card {
+  width: 100%;
+  max-width: 420px; /* MOVED HERE: The card stays perfectly sized */
+  margin: 0 auto 2rem auto; /* Centers the card horizontally */
+  background: rgba(12, 12, 18, 0.5);
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  border-radius: 24px;
+  box-shadow: 0 30px 70px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0px rgba(255, 255, 255, 0.04); 
+  padding: 2rem 2.2rem; 
+}
+
+/* --- CONTROL PANEL BLOCK --- */
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  
+  /* THE FIX: Reduced gaps so the three inputs don't stretch the card */
+  gap: 1rem; 
+  margin-bottom: 1.5rem; 
+}
+
+.select-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.field-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: #55555c;
+  text-transform: uppercase;
+  padding-left: 2px;
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-wrapper::after {
+  content: '▾';
+  font-size: 0.7rem;
+  color: #44444c;
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.clean-select {
+  width: 100%;
+  padding: 1.1rem 1.2rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 14px;
+  color: #e4e4e7;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: background 0.3s ease;
+}
+
+.clean-select option {
+  background: #09090d;
+  color: #e4e4e7;
+}
+
+/* --- LUXURY PRIMARY INTERACTIVE CTA --- */
+.btn-action-primary {
+  width: 100%;
+  padding: 1.2rem;
+  background: #ffffff;
+  color: #050508;
+  border-radius: 14px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  box-shadow: 0 4px 25px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-action-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 35px rgba(255, 255, 255, 0.2);
+  background: #fbfbfe;
+}
+
+.btn-action-primary:active {
+  transform: translateY(0);
+}
+
+/* --- MINIMALIST LAYOUT DIVIDER --- */
+.premium-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.6rem 0;
+}
+
+.premium-divider .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
+}
+
+.divider-text {
+  padding: 0 12px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.2);
+  letter-spacing: 2px;
+}
+
+/* --- MULTIPLAYER CODE INPUTS --- */
+.join-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.clean-join-input {
+  width: 100%;
+  padding: 1.1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 14px;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 4px;
+  box-sizing: border-box;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.clean-join-input::placeholder {
+  letter-spacing: 1px;
+  font-size: 0.85rem;
+  color: #3f3f46;
+}
+
+.btn-action-secondary {
+  width: 100%;
+  padding: 1.1rem;
+  background: rgba(255, 255, 255, 0.01);
+  color: #ffffff;
+  border-radius: 14px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-action-secondary:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* --- DYNAMIC READY-TO-JOIN ANIMATION --- */
+.btn-action-secondary.ready-to-join {
+  background: rgba(212, 175, 55, 0.12); /* Subtle gold glass tint */
+  color: #ffffff;
+  border: 1px solid rgba(212, 175, 55, 0.4) !important;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  /* Triggers the breathing animation */
+  animation: goldPulse 2s infinite ease-in-out;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-action-secondary.ready-to-join:hover {
+  background: rgba(212, 175, 55, 0.25);
+  border: 1px solid rgba(212, 175, 55, 0.8) !important;
+  transform: translateY(-2px) scale(1.02);
+  /* Intensifies glow on hover while stopping the pulse */
+  box-shadow: 
+    0 15px 35px rgba(212, 175, 55, 0.3),
+    inset 0 0 20px rgba(212, 175, 55, 0.2);
+  animation: none; 
+}
+
+.btn-action-secondary.ready-to-join:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* The buttery smooth breathing keyframes */
+@keyframes goldPulse {
+  0% { 
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.1), inset 0 0 10px rgba(212, 175, 55, 0.05); 
+  }
+  50% { 
+    box-shadow: 0 0 35px rgba(212, 175, 55, 0.5), inset 0 0 20px rgba(212, 175, 55, 0.2); 
+  }
+  100% { 
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.1), inset 0 0 10px rgba(212, 175, 55, 0.05); 
+  }
+}
+
+/* --- PREMIUM FLOATING TOAST NOTIFICATION --- */
+.toast-notification {
+  position: fixed !important; /* Forcefully drops out of the flex container layout flow */
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 15, 22, 0.85);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  padding: 1rem 1.8rem;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7);
+  z-index: 99999; /* Guarantees it sits cleanly on top of all card views */
+  pointer-events: none;
+  animation: slideDownToast 0.4s cubic-bezier(0.16, 1, 0.3, 1), fadeOutToast 0.4s ease forwards 3.6s;
+}
+
+.toast-accent {
+  width: 3px;
+  height: 16px;
+  background: #d4af37;
+  border-radius: 2px;
+  box-shadow: 0 0 12px #d4af37;
+}
+
+.toast-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e4e4e7;
+  letter-spacing: 0.5px;
+  white-space: nowrap; /* Keeps the notification text perfectly organized on one line */
+}
+
+/* Smooth contextual dropdown and fade animations */
+@keyframes slideDownToast {
+  from { 
+    top: -60px; 
+    opacity: 0; 
+  }
+  to { 
+    top: 30px; 
+    opacity: 1; 
+  }
+}
+
+@keyframes fadeOutToast {
+  from { 
+    opacity: 1; 
+    transform: translateX(-50%) translateY(0); 
+  }
+  to { 
+    opacity: 0; 
+    transform: translateX(-50%) translateY(-12px); 
+  }
+}
+
+/* --- PREMIUM MATCHMAKING STANDBY PANEL --- */
+.matchmaking-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  animation: smoothMount 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.matchmaking-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(12, 12, 18, 0.5);
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  padding: 4rem 2.5rem;
+  border-radius: 28px;
+  box-shadow: 
+    0 30px 70px -10px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0px rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.8rem; /* Automatically sets uniform luxury breathing space */
+}
+
+.matchmaking-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: #55555c;
+  text-transform: uppercase;
+}
+
+.matchmaking-code {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 12px;
+  text-indent: 12px; /* Offsets tracking to keep the text perfectly centered */
+  cursor: pointer;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.matchmaking-code:hover {
+  transform: scale(1.02);
+  color: #fbfbfe;
+}
+
+.premium-pulse-line {
+  width: 64px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+  animation: dynamicLinePulse 2s ease-in-out infinite;
+}
+
+.matchmaking-subtext {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: #a1a1aa;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+}
+
+/* Luxury breathing line keyframes */
+@keyframes dynamicLinePulse {
+  0% { transform: scaleX(0.7); opacity: 0.2; }
+  50% { transform: scaleX(1.3); opacity: 0.7; filter: drop-shadow(0 0 8px #fff); }
+  100% { transform: scaleX(0.7); opacity: 0.2; }
+}
+
+/* --- PREMIUM LOBBY INPUTS --- */
+.clean-join-input, .clean-select {
+  background: rgba(25, 25, 35, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.clean-join-input:focus, .clean-select:focus {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--accent-gold) !important;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+  outline: none;
+}
+
+.btn-action-primary {
+  box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-action-primary:hover {
+  box-shadow: 0 15px 40px rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+/* --- PREMIUM FULLSCREEN TOGGLE --- */
+.btn-fullscreen {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000; /* Ensures it is always clickable on top of everything */
+  
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  
+  /* Dark Glass Aesthetic */
+  background: rgba(15, 15, 20, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  color: #a0a0ab;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-fullscreen svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.btn-fullscreen:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(212, 175, 55, 0.4); /* Subtle gold rim */
+  color: #d4af37; /* Gold icon */
+  box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-fullscreen:hover svg {
+  transform: scale(1.1);
+}
+
+.btn-fullscreen:active {
+  transform: translateY(0) scale(0.95);
+}
