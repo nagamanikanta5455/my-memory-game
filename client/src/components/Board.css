@@ -596,3 +596,133 @@
     min-width: 420px !important;
   }
 }
+
+/* --- BULLETPROOF DISCONNECT MODAL --- */
+.disconnect-overlay-bulletproof {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1050; /* Above regular game UI */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 0 1rem;
+}
+
+.disconnect-modal-bulletproof {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 384px; /* max-w-sm */
+  padding: 2rem;
+  background-color: #111216;
+  border-radius: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.disconnect-header-bulletproof {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 900;
+  color: #ef4444;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.6));
+  line-height: 1.25;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .disconnect-header-bulletproof {
+    font-size: 2.25rem; /* text-4xl */
+  }
+}
+
+.disconnect-timer-bulletproof {
+  font-family: 'Outfit', sans-serif;
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin: 0 0 2rem 0;
+}
+
+.disconnect-timer-bulletproof span {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.disconnect-code-box-bulletproof {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a1c23;
+  width: 100%;
+  padding: 1rem 0;
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.disconnect-code-box-bulletproof:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.disconnect-code-box-bulletproof:active {
+  transform: translateY(0);
+}
+
+.disconnect-code-label-bulletproof {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  color: #6b7280;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.25rem;
+}
+
+.disconnect-code-value-bulletproof {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.875rem;
+  color: #ffffff;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.disconnect-code-action-bulletproof {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  color: #6b7280;
+  font-weight: bold;
+  margin-top: 0.25rem;
+}
+
+.disconnect-exit-btn-bulletproof {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+}
+
+.disconnect-exit-btn-bulletproof:hover {
+  color: #ffffff;
+}

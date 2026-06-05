@@ -26,7 +26,8 @@ export default function Board({ roomCode, initialData }: BoardProps) {
 
   const [currentTurn, setCurrentTurn] = useState<string>(initialData.turn);
   const [scores, setScores] = useState<Record<string, number>>(initialData.scores);
-  const [players] = useState<string[]>(initialData.players);
+  const [players, setPlayers] = useState<string[]>(initialData.players);
+  const [gameHasStarted] = useState(true);
   const [pairsFound, setPairsFound] = useState<number>(0);
   const [moves, setMoves] = useState<Record<string, number>>({});
 
@@ -310,19 +311,28 @@ export default function Board({ roomCode, initialData }: BoardProps) {
       setOpponentTempDisconnected(true);
       setDisconnectTimer(120);
       setRematchStatus('idle'); // Kill the waiting state
+      setPlayers(prev => prev.filter(id => id === socket.id));
     });
     socket.on('playerReconnected', () => {
       setOpponentTempDisconnected(false);
+      setPlayers(prev => {
+        if (oppId && !prev.includes(oppId)) {
+          return [...prev, oppId];
+        }
+        return prev;
+      });
     });
     socket.on('playerDisconnected', () => {
       setOpponentTempDisconnected(false);
       setOpponentDisconnected(true);
       setRematchStatus('idle'); // THE FIX: Kill the "Waiting for opponent" trap instantly
+      setPlayers(prev => prev.filter(id => id === socket.id));
     });
     socket.on('opponent_disconnected', () => {
       setOpponentTempDisconnected(false);
       setOpponentDisconnected(true);
       setRematchStatus('idle');
+      setPlayers(prev => prev.filter(id => id === socket.id));
     });
 
     const onDisconnect = () => setMyConnectionLost(true);
@@ -337,6 +347,7 @@ export default function Board({ roomCode, initialData }: BoardProps) {
       setDeck(newData.deck);
       setScores(newData.scores);
       setCurrentTurn(newData.turn);
+      setPlayers(initialData.players);
       setMatched([]);
       setFlipped(newData.deck.map((_, i) => i)); // Flip all face-up for the peek
       setErrorCards([]);
@@ -482,45 +493,47 @@ export default function Board({ roomCode, initialData }: BoardProps) {
       )}
 
       {/* 2. OPPONENT TEMPORARILY DISCONNECTED OVERLAY */}
-      {!myConnectionLost && opponentTempDisconnected && (
-        <div className="victory-overlay">
-          <div className="victory-card theme-defeat">
-            {/* THE FIX: Clamped font size prevents the 12-letter word from breaking the box bounds */}
-            <h1 className="victory-title">
-              OPPONENT <br /> DISCONNECTED
-            </h1>
-            
-            <p 
-              style={{ 
-                color: '#a0a0ab', 
-                margin: '0 auto', /* Stripped out the top/bottom margins to rely entirely on the flex gap */
-                fontSize: '1.1rem',
-                width: '100%'
-              }}
-            >
-              Waiting <span style={{ color: '#ff3344', fontWeight: 'bold' }}>{formatTime(disconnectTimer)}</span> for them to rejoin...
+      {gameHasStarted && players.length < 2 && !myConnectionLost && opponentTempDisconnected && (
+        <div className="disconnect-overlay-bulletproof">
+          <div className="disconnect-modal-bulletproof">
+            <div className="w-full flex flex-col items-center justify-center mb-6 text-center">
+              <h2 className="text-3xl sm:text-4xl font-black text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.8)] uppercase leading-none">
+                {/* Block 1: Forced to its own line, stretched to match width */}
+                <div className="tracking-[0.35em] ml-2 mb-2">
+                  OPPONENT
+                </div>
+                
+                {/* Block 2: Forced to its own line below it */}
+                <div className="tracking-widest">
+                  DISCONNECTED
+                </div>
+              </h2>
+            </div>
+
+            <p className="disconnect-timer-bulletproof">
+              Waiting <span>{formatTime(disconnectTimer)}</span> for them to rejoin...
             </p>
 
-            {/* THE FIX: Premium Click-to-Copy Room Badge */}
-            <div className="disconnect-room-badge" onClick={handleCopyRoom}>
-              <span className="badge-label">ROOM CODE</span>
-              <span className="badge-code">{roomCode}</span> 
-              <span className="badge-action" style={{ color: copied ? '#00ffaa' : '#81818a' }}>
+            <div className="disconnect-code-box-bulletproof" onClick={handleCopyRoom}>
+              <span className="disconnect-code-label-bulletproof">ROOM CODE</span>
+              <span className="disconnect-code-value-bulletproof">{roomCode}</span>
+              <span 
+                className="disconnect-code-action-bulletproof"
+                style={{ color: copied ? '#00ffaa' : '#6b7280' }}
+              >
                 {copied ? '✔ COPIED TO CLIPBOARD' : 'CLICK TO COPY'}
               </span>
             </div>
 
-            <div className="modal-buttons" style={{ marginTop: '1.5rem' }}>
-              <button className="btn-endgame btn-leave-room" onClick={handleLeaveRoom} style={{ width: '100%' }}>
-                EXIT TO LOBBY
-              </button>
-            </div>
+            <button className="disconnect-exit-btn-bulletproof" onClick={handleLeaveRoom}>
+              EXIT TO LOBBY
+            </button>
           </div>
         </div>
       )}
 
       {/* 3. OPPONENT PERMANENTLY DISCONNECTED OVERLAY */}
-      {!myConnectionLost && !opponentTempDisconnected && opponentDisconnected && !isGameOver && (
+      {gameHasStarted && players.length < 2 && !myConnectionLost && !opponentTempDisconnected && opponentDisconnected && !isGameOver && (
         <div className="victory-overlay">
           <div className="victory-card theme-defeat">
             <h1 className="victory-title" style={{ fontSize: '2.2rem' }}>GAME ABANDONED</h1>
